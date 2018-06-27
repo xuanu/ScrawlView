@@ -14,11 +14,15 @@ public class MainActivity extends Activity {
     SketchPadView mSketchPadView;
     private JSONArray noteArray;
 
+    private View hideLeft, hideTop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSketchPadView = (SketchPadView) findViewById(R.id.scrawlview);
+        hideLeft = findViewById(R.id.hideLeft);
+        hideTop = findViewById(R.id.hideTop);
         Button tButton1 = (Button) findViewById(R.id.pen);
         Button tButton2 = (Button) findViewById(R.id.eraser);
         tButton1.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +57,18 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 mSketchPadView.drawLine(SketchPadView.string2Line(noteArray), true);
+            }
+        });
+        findViewById(R.id.changeSizeW).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideLeft.setVisibility(hideLeft.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            }
+        });
+        findViewById(R.id.changeSizeH).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideTop.setVisibility(hideTop.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
             }
         });
     }

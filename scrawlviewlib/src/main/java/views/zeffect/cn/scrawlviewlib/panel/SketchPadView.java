@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -74,10 +75,10 @@ public class SketchPadView extends View {
     protected void initialize() {
         m_canvas = new Canvas();
         m_bitmapPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        setStrokeType(PenType.Pen);
         m_penSize = dp2px(3);
         m_eraserSize = dp2px(20);
         HALF_STROKE_WIDTH = m_penSize / 2;
+        setStrokeType(PenType.Pen);
     }
 
     private int m_penSize;
@@ -166,7 +167,7 @@ public class SketchPadView extends View {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        createStrokeBitmap(w, h);
+        if (w != oldw || h != oldh) createStrokeBitmap(w, h);
     }
 
 
@@ -174,8 +175,21 @@ public class SketchPadView extends View {
         Bitmap bitmap = Bitmap.createBitmap(w, h,
                 Bitmap.Config.ARGB_8888);
         if (null != bitmap) {
+            if (m_canvas != null) {
+                Bitmap mFreeBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8);
+                m_canvas.setBitmap(mFreeBitmap);
+                m_canvas = null;
+                mFreeBitmap.recycle();
+                mFreeBitmap = null;
+            }
+            if (m_foreBitmap != null) {
+                if (!m_foreBitmap.isRecycled()) m_foreBitmap.recycle();
+                m_foreBitmap = null;
+            }
             m_foreBitmap = bitmap;
+            if (m_canvas == null) m_canvas = new Canvas();
             m_canvas.setBitmap(m_foreBitmap);
+            drawLine(fingerLines);
         }
     }
 
@@ -218,15 +232,15 @@ public class SketchPadView extends View {
         invalidate();
     }
 
+
     public void drawLine(List<Line> lines) {
         drawLine(lines, false);
     }
 
-    public void drawLine(List<Line> lines, boolean reset) {
-        if (reset) fingerLines.clear();
+    public void drawLine(List<Line> lines, boolean append) {
         if (lines == null) return;
-        fingerLines.addAll(lines);
-        for (Line pLine : fingerLines) {
+        if (append) fingerLines.addAll(lines);
+        for (Line pLine : lines) {
             ISketchPadTool tempTool;
             ViewPoint viewSizePoint = pLine.getViewSize();
             int size = (int) ((getMeasuredHeight() * pLine.getWidth() * 1f) / viewSizePoint.getY());

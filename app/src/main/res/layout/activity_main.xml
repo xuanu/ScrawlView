@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#fff"
+    android:orientation="vertical"
     tools:context="views.zeffect.cn.scrawlview.MainActivity">
 
     <LinearLayout
@@ -46,10 +46,49 @@
             android:layout_height="wrap_content"
             android:text="画保存的笔迹" />
 
+        <Button
+            android:id="@+id/changeSizeW"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="改变控件大小宽度" />
+
+        <Button
+            android:id="@+id/changeSizeH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="改变控件大小高度" />
+
     </LinearLayout>
 
-    <views.zeffect.cn.scrawlviewlib.panel.SketchPadView
-        android:id="@+id/scrawlview"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/hideTop"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#123456"></View>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <View
+                android:id="@+id/hideLeft"
+                android:layout_width="20dp"
+                android:layout_height="match_parent"
+                android:background="#123456"></View>
+
+            <views.zeffect.cn.scrawlviewlib.panel.SketchPadView
+                android:id="@+id/scrawlview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 </LinearLayout>
