@@ -1,8 +1,7 @@
 package views.zeffect.cn.scrawlview;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.widget.ButtonBarLayout;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,7 +10,7 @@ import org.json.JSONException;
 
 import views.zeffect.cn.scrawlviewlib.panel.SketchPadView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     SketchPadView mSketchPadView;
     private JSONArray noteArray;
 
