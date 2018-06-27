@@ -11,3 +11,5 @@ drawLine(List<line>,reste)
 line2String();
 string2Line();
 ```
+
+![image](https://raw.githubusercontent.com/xuanu/ScrawlView/master/screenshots/TIM%E6%88%AA%E5%9B%BE20180627100802.png)
