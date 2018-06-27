@@ -6,10 +6,14 @@ import android.support.v7.widget.ButtonBarLayout;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import views.zeffect.cn.scrawlviewlib.panel.SketchPadView;
 
 public class MainActivity extends AppCompatActivity {
     SketchPadView mSketchPadView;
+    private JSONArray noteArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mSketchPadView.setStrokeType(SketchPadView.PenType.Eraser);
+            }
+        });
+        findViewById(R.id.clear).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSketchPadView.clear();
+            }
+        });
+        findViewById(R.id.saveNote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    noteArray = mSketchPadView.line2String();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        findViewById(R.id.drawNote).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSketchPadView.drawLine(SketchPadView.string2Line(noteArray), true);
             }
         });
     }
