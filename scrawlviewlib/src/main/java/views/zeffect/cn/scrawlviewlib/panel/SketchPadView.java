@@ -125,6 +125,7 @@ public class SketchPadView extends View {
                     expandDirtyRect(historicalX, historicalY);
                     m_curTool.touchMove(historicalX, historicalY);
                 }
+                m_curTool.touchMove(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
                 //存线
