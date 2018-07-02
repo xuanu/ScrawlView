@@ -112,6 +112,7 @@ public class SketchPadView extends View {
                 //
                 lastTouchX = eventX;
                 lastTouchY = eventY;
+                resetDirtyRect(eventX, eventY);
                 setStrokeType(mPenType);
                 HALF_STROKE_WIDTH = Math.floor(m_curTool.getTextSize() * 1f / 2);
                 m_curTool.touchDown(event.getX(), event.getY());
@@ -128,6 +129,14 @@ public class SketchPadView extends View {
                 m_curTool.touchMove(event.getX(), event.getY());
                 break;
             case MotionEvent.ACTION_UP:
+                int upHistorySize = event.getHistorySize();
+                for (int i = 0; i < upHistorySize; i++) {//取当前点和下一点作贝塞乐曲线
+                    float historicalX = event.getHistoricalX(i);
+                    float historicalY = event.getHistoricalY(i);
+                    singleLine.getPoints().add(new ViewPoint(historicalX, historicalY));
+                    expandDirtyRect(historicalX, historicalY);
+                    m_curTool.touchMove(historicalX, historicalY);
+                }
                 //存线
                 singleLine.getPoints().add(new ViewPoint(event.getX(), event.getY()));
                 fingerLines.add(singleLine);
@@ -214,6 +223,16 @@ public class SketchPadView extends View {
         } else if (historicalY > dirtyRect.bottom) {
             dirtyRect.bottom = historicalY;
         }
+    }
+
+    /**
+     * Resets the dirty region when the motion event occurs.
+     */
+    private void resetDirtyRect(float eventX, float eventY) {
+        dirtyRect.left = Math.min(lastTouchX, eventX);
+        dirtyRect.right = Math.max(lastTouchX, eventX);
+        dirtyRect.top = Math.min(lastTouchY, eventY);
+        dirtyRect.bottom = Math.max(lastTouchY, eventY);
     }
 
 
