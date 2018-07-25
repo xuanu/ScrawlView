@@ -66,7 +66,8 @@ public class SketchPadEraser implements ISketchPadTool {
         float dy = Math.abs(y - m_curY);
 
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
-            m_eraserPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
+//            m_eraserPath.quadTo(m_curX, m_curY, (x + m_curX) / 2, (y + m_curY) / 2);
+            m_eraserPath.quadTo((x + m_curX) / 2, (y + m_curY) / 2, x, y);
             m_curX = x;
             m_curY = y;
         }
